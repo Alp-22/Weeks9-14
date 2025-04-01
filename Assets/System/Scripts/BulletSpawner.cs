@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ public class BulletSpawner : MonoBehaviour
     public float bulletSpeed = 50f;
     public float bulletDamage = 10f;
     public List<GameObject> spawnedBullets;
+    public CinemachineImpulseSource impulseSource;
     void Start()
     {
         //Initialize list to track spawned bullets
@@ -106,6 +108,7 @@ public class BulletSpawner : MonoBehaviour
             muzzleGO.transform.parent = spawner.transform;
             //Reset counter to 0 to account for firing delay
             counter = 0;
+            impulseSource.GenerateImpulse();
         }
     }
 }
