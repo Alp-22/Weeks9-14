@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Knight : MonoBehaviour
 {
-    public float speed = 2;
+    public float speed = 5;
     Animator animator;
     SpriteRenderer sr;
-    bool canRun;
+    bool canRun = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,11 +19,13 @@ public class Knight : MonoBehaviour
     void Update()
     {
         float direction = Input.GetAxis("Horizontal");
+        float direction2 = Input.GetAxis("Vertical");
         sr.flipX = direction < 0;
 
         animator.SetFloat("speed", Mathf.Abs(direction));
+        animator.SetFloat("speed", Mathf.Abs(direction2));
 
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             animator.SetTrigger("attack");
             canRun = false;
@@ -32,6 +34,7 @@ public class Knight : MonoBehaviour
         {
 
             transform.position += transform.right * direction * speed * Time.deltaTime;
+            transform.position += transform.up * direction2 * speed * Time.deltaTime;
         }
     }
     public void AttackHasFinished()
