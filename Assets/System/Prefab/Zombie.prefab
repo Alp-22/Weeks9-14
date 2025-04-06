@@ -176,7 +176,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.075534075, g: 0.4037736, b: 0, a: 1}
   m_FlipX: 0
@@ -201,6 +201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprite: {fileID: 6651173133156859226}
+  player: {fileID: 0}
   hitReg:
     serializedVersion: 2
     m_Curve:
@@ -229,6 +230,10 @@ MonoBehaviour:
   spawner: {fileID: 0}
   zombieSpawner: {fileID: 0}
   text: {fileID: 2387252012551370009}
+  speed: 2
+  zombieHP: 100
+  zombieMaxHP: 100
+  zombieDamage: 1
 --- !u!1 &9109522848444545013
 GameObject:
   m_ObjectHideFlags: 0

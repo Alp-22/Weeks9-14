@@ -62,6 +62,8 @@ public class DamageEvent : MonoBehaviour
                     if (!hit)
                     {
                         damageEvent.Invoke();
+                        colorCurve = 0f;
+                        changeColor = Color.red;
                     }
                     //Debug.Log(playerHP);
                 }
@@ -71,33 +73,26 @@ public class DamageEvent : MonoBehaviour
         {
             playerHP = 100f;
         }
-        Color color = new Color(0, 0, 0, 255);
-        /*if (hit && counter <= 255)
+        /*Color color = new Color(0, 0, 0, 255);
+        if (hit)
         {
+            //Debug.Log("Changing Sprite " + colorCurve + " " + changeColor);
             //If hit fade from red to whitea
             colorCurve = color.r + Time.deltaTime;
             changeColor.b += hitReg.Evaluate(colorCurve);
             changeColor.g += hitReg.Evaluate(colorCurve);
             sprite.color = changeColor;
-            counter++;
+           // counter++;
         }
         else
         {
             //Sets everything to default when the timer ends
             colorCurve = 0f;
             changeColor = Color.red;
-            counter = 0;
-            hit = false;
+            //counter = 0;
+            //hit = false;
             sprite.color = new Color(1, 1, 1);
         }*/
-
-        if (hit)
-        {
-            colorCurve = color.r + Time.deltaTime;
-            changeColor.b += hitReg.Evaluate(colorCurve);
-            changeColor.g += hitReg.Evaluate(colorCurve);
-            sprite.color = changeColor;
-        }
     }
 
     public void Hit()
@@ -110,21 +105,34 @@ public class DamageEvent : MonoBehaviour
         sprite.color = new Color(255, 255, 255);
         hit = true;
         playerHP -= spawner.zombieDamage;
+        if (playerHP <= 0)
+        {
+            playerHP = 0;
+            //Add game over screen
+        }
+
         damaged = StartCoroutine(ImmunityFrames());
     }
 
     private IEnumerator ImmunityFrames()
     {
         t = 0;
+        Color color = new Color(0, 0, 0, 255);
         while (t < timer)
         {
+            colorCurve = color.r + Time.deltaTime;
+            changeColor.b += hitReg.Evaluate(colorCurve);
+            changeColor.g += hitReg.Evaluate(colorCurve);
+            sprite.color = changeColor;
             t += Time.deltaTime;
             yield return null;
         }
         Debug.Log("Completed IFrames");
         colorCurve = 0f;
         changeColor = Color.red;
-        hit = false;
+        //counter = 0;
+        //hit = false;
         sprite.color = new Color(1, 1, 1);
+        hit = false;
     }
 }

@@ -9,6 +9,7 @@ public class Zombies : MonoBehaviour
     // Start is called before the first frame update
     //Initialize variables
     public SpriteRenderer sprite;
+    public GameObject player;
     //Animation curve variable
     [SerializeField]
     public AnimationCurve hitReg;
@@ -18,22 +19,32 @@ public class Zombies : MonoBehaviour
     public ZombieSpawner zombieSpawner;
     //Variable for the health bar text
     public TextMeshProUGUI text;
+    private Vector3 playerPos;
     Color changeColor = new Color(0,0,0,255);
     Color originalColor = new Color(0, 0.5f, 0);
     float colorCurve;
     bool hit;
     int counter;
+
+    public float speed = 2f;
     //Health variables
-    float zombieHP = 100f, zombieMaxHP = 100f;
+    public float zombieHP = 100f, zombieMaxHP = 100f;
+    public float zombieDamage = 1f;
     //int respawnCounter = 0;
     void Start()
     {
         bulletSpawner = GameObject.Find("BulletSpawner");
+        player = GameObject.Find("Player");
+        zombieHP = zombieSpawner.zombieHP;
+        zombieMaxHP = zombieSpawner.zombieMaxHP;
+        zombieDamage = zombieSpawner.zombieDamage;
+        speed = zombieSpawner.speed;
     }
 
     // Update is called once per frame
     void Update()
     {
+        zombieMovement();
         //Set the text to the hp
         text.text = zombieHP + "/" + zombieMaxHP;
         //Get the bullet spawner component
@@ -108,5 +119,10 @@ public class Zombies : MonoBehaviour
             sprite.color = originalColor;
       
         }
+    }
+    public void zombieMovement()
+    {
+        playerPos = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
+        transform.position = Vector3.MoveTowards(transform.position, playerPos, speed * Time.deltaTime);
     }
 }

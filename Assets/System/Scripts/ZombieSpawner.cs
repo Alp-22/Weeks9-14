@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class ZombieSpawner : MonoBehaviour
@@ -12,6 +14,13 @@ public class ZombieSpawner : MonoBehaviour
     public GameObject spawner;
     public int zombieDamage = 1;
     bool spawned = false;
+    Coroutine spawnTimer;
+    float timer = 3f;
+    public float t;
+    public float speed = 2f;
+    //Health variables
+    public float zombieHP = 100f, zombieMaxHP = 100f;
+    public Vector3 spawnPosition;
     void Start()
     {
 
@@ -22,11 +31,28 @@ public class ZombieSpawner : MonoBehaviour
     {
         if (!spawned)
         {
-            zombieGO = Instantiate(prefab, transform.position, transform.rotation);
+            speed = Random.Range(3, 7);
+            zombieHP = Random.Range(20, 300);
+            zombieMaxHP = zombieHP;
+            zombieDamage = Random.Range(1, 10);
+            spawnPosition = new Vector3(Random.Range(-100, 100), Random.Range(-100,100), Random.Range(-100,100));
+            zombieGO = Instantiate(prefab, spawnPosition, transform.rotation);
             zombie = zombieGO.GetComponent<Zombies>();
             zombie.zombieSpawner = this;
             spawnedZombies.Add(zombieGO);
             spawned = true;
+            spawnTimer = StartCoroutine(SpawnTimer());
         }
+    }
+    private IEnumerator SpawnTimer()
+    {
+        t = 0;
+        while (t < timer)
+        {
+            t += Time.deltaTime;
+            yield return null;
+        }
+        Debug.Log("Spawned another zombie");
+        spawned = false;
     }
 }
