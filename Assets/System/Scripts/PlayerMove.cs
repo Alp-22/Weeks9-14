@@ -1,24 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class PlayerMove : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
         //Adjust player speed
-        float speed = 0.005f;
-        Vector2 playerPos = transform.position;
+        //float speed = 0.005f;
+        //Vector2 playerPos = transform.position;
         //If W is pressed move up
-        if (Input.GetKey(KeyCode.W))
+        /*if (Input.GetKey(KeyCode.W))
         {
             //Stops the player from going out of bounds
             if (playerPos.y <= (Camera.main.orthographicSize * Screen.width / Screen.height) / 2)
@@ -54,6 +51,17 @@ public class PlayerMove : MonoBehaviour
                 playerPos.x += speed;
             }
         }
-        transform.position = playerPos;
+        transform.position = playerPos;*/
+
+        float speed = 5f;
+
+        float direction = Input.GetAxis("Horizontal");
+        float direction2 = Input.GetAxis("Vertical");
+
+
+
+        transform.position += transform.right * direction * speed * Time.deltaTime;
+        transform.position += transform.up * direction2 * speed * Time.deltaTime;
+
     }
 }

@@ -87,7 +87,7 @@ public class BulletSpawner : MonoBehaviour
             fire = Input.GetMouseButton(0);
         }
         //Prevent the gun from shooting if the cursor is over the UI
-        if (EventSystem.current.IsPointerOverGameObject()) return;
+        //if (EventSystem.current.IsPointerOverGameObject()) return;
         //If the counter is over the fire rate it lets you shoot
         if (fire && counter >= fireRate)
         {

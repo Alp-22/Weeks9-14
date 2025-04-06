@@ -4,7 +4,7 @@ using System.Diagnostics.Tracing;
 using TMPro;
 using UnityEngine;
 
-public class Dummy : MonoBehaviour
+public class Zombies : MonoBehaviour
 {
     // Start is called before the first frame update
     //Initialize variables
@@ -15,46 +15,49 @@ public class Dummy : MonoBehaviour
     //Variable for the bullet spawner game object
     public GameObject bulletSpawner;
     public BulletSpawner spawner;
+    public ZombieSpawner zombieSpawner;
     //Variable for the health bar text
     public TextMeshProUGUI text;
     Color changeColor = new Color(0,0,0,255);
+    Color originalColor = new Color(0, 0.5f, 0);
     float colorCurve;
     bool hit;
     int counter;
     //Health variables
-    float dummyHP = 1000f, dummyMaxHP = 1000f;
+    float zombieHP = 100f, zombieMaxHP = 100f;
     //int respawnCounter = 0;
     void Start()
     {
+        bulletSpawner = GameObject.Find("BulletSpawner");
     }
 
     // Update is called once per frame
     void Update()
     {
         //Set the text to the hp
-        text.text = dummyHP + "/" + dummyMaxHP;
+        text.text = zombieHP + "/" + zombieMaxHP;
         //Get the bullet spawner component
         spawner = bulletSpawner.GetComponent<BulletSpawner>();
-        //Go through the list of spawned bullets to find the one that hits the dummy
+        //Go through the list of spawned bullets to find the one that hits the zombie
         for (int i = 0; i < spawner.spawnedBullets.Count; i++)
         {
             //Checks if the bullet exists
             if (spawner.spawnedBullets[i] != null)
             {
-                //Initiaize dummy position and bullet position
+                //Initiaize zombie position and bullet position
                 Vector3 bulletPos = spawner.spawnedBullets[i].transform.position;
 
-                Vector3 dummyPos = transform.position;
-                //Code which calculates the position of the bullet and dummy for a hitbox
-                if (bulletPos.x <= dummyPos.x + 0.8f &&
-                    bulletPos.x >= dummyPos.x - 0.8f &&
-                    bulletPos.y <= dummyPos.y + 0.8f &&
-                    bulletPos.y >= dummyPos.y - 0.8f)
+                Vector3 zombiePos = transform.position;
+                //Code which calculates the position of the bullet and zombie for a hitbox
+                if (bulletPos.x <= zombiePos.x + 0.8f &&
+                    bulletPos.x >= zombiePos.x - 0.8f &&
+                    bulletPos.y <= zombiePos.y + 0.8f &&
+                    bulletPos.y >= zombiePos.y - 0.8f)
                 {
                     //spawner.bullet.enabled = false;
-                    //Minus the dummy HP by damage
-                    dummyHP -= spawner.bulletDamage;
-                    //Destroy the bullet that hit the dummy
+                    //Minus the zombie HP by damage
+                    zombieHP -= spawner.bulletDamage;
+                    //Destroy the bullet that hit the zombie
                     Destroy(spawner.spawnedBullets[i]);
                     Debug.Log("Hit");
                     //Enable hit boolean
@@ -63,15 +66,15 @@ public class Dummy : MonoBehaviour
                     colorCurve = 0f;
                     changeColor = Color.red;
                     counter = 0;
-                    sprite.color = new Color(255, 255, 255);
-                    //Debug.Log(dummyHP);
+                    //sprite.color = new Color(0, 0, 0, 255);
+                    //Debug.Log(zombieHP);
                 }
             }
         }
-        if (dummyHP <= 0)
+        if (zombieHP <= 0)
         {
             //gameObject.SetActive(false);
-            dummyHP = 1000f;
+            Destroy(gameObject);
         }
         /*if (gameObject.activeSelf == false)
         {
@@ -80,7 +83,7 @@ public class Dummy : MonoBehaviour
             if (respawnCounter > 1000)
             {
                 gameObject.SetActive(true);
-                dummyHP = 1000f;
+                zombieHP = 1000f;
                 respawnCounter = 0;
             }
         }    */
@@ -89,8 +92,9 @@ public class Dummy : MonoBehaviour
         {
             //If hit fade from red to white
             colorCurve = color.r + Time.deltaTime;
-            changeColor.b += hitReg.Evaluate(colorCurve);
-            changeColor.g += hitReg.Evaluate(colorCurve);
+            //changeColor.b += hitReg.Evaluate(colorCurve);
+            changeColor.r -= hitReg.Evaluate(colorCurve);
+            changeColor.g += hitReg.Evaluate(colorCurve) / 2.3f;
             sprite.color = changeColor;
             counter++;
         }
@@ -98,10 +102,11 @@ public class Dummy : MonoBehaviour
         {
             //Sets everything to default when the timer ends
             colorCurve = 0f;
-            changeColor = Color.red;
+            //changeColor = Color.red;
             counter = 0;
             hit = false;
-            sprite.color = new Color(255, 255, 255);
+            sprite.color = originalColor;
+      
         }
     }
 }
