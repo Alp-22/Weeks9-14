@@ -31,6 +31,7 @@ public class BulletSpawner : MonoBehaviour
     public float bulletDamage = 10f;
     public List<GameObject> spawnedBullets;
     public CinemachineImpulseSource impulseSource;
+    public AudioSource pistolShot;
     void Start()
     {
         //Initialize list to track spawned bullets
@@ -109,6 +110,7 @@ public class BulletSpawner : MonoBehaviour
             //Reset counter to 0 to account for firing delay
             counter = 0;
             impulseSource.GenerateImpulse();
+            pistolShot.Play();
         }
     }
 }

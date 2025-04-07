@@ -25,6 +25,15 @@ public class Zombies : MonoBehaviour
     float colorCurve;
     bool hit;
     int counter;
+    int sound;
+
+    public AudioSource sound1;
+    public AudioSource sound2;
+    public AudioSource sound3;
+
+    float timer = 1f;
+    public float t;
+    bool timerUp = false;
 
     public float speed = 2f;
     //Health variables
@@ -39,12 +48,17 @@ public class Zombies : MonoBehaviour
         zombieMaxHP = zombieSpawner.zombieMaxHP;
         zombieDamage = zombieSpawner.zombieDamage;
         speed = zombieSpawner.speed;
+        StartCoroutine(SoundTimer());
     }
 
     // Update is called once per frame
     void Update()
     {
         zombieMovement();
+        if (timerUp)
+        {
+            playSound();
+        }
         //Set the text to the hp
         text.text = zombieHP + "/" + zombieMaxHP;
         //Get the bullet spawner component
@@ -124,5 +138,35 @@ public class Zombies : MonoBehaviour
     {
         playerPos = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
         transform.position = Vector3.MoveTowards(transform.position, playerPos, speed * Time.deltaTime);
+    }
+
+    public void playSound()
+    {
+        sound = Random.Range(1, 4);
+        Debug.Log(sound);
+        if (sound == 1)
+        {
+            sound1.Play();
+        }
+        if (sound == 2)
+        {
+            sound2.Play();
+        }
+        if (sound == 3)
+        {
+            sound3.Play();
+        }
+        timerUp = false;
+    }
+
+    private IEnumerator SoundTimer()
+    {
+        t = 0;
+        while (t < timer)
+        {
+            t += Time.deltaTime;
+            yield return null;
+        }
+        timerUp = true;
     }
 }

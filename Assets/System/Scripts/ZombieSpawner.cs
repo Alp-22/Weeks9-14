@@ -15,7 +15,7 @@ public class ZombieSpawner : MonoBehaviour
     public int zombieDamage = 1;
     bool spawned = false;
     Coroutine spawnTimer;
-    float timer = 3f;
+    float timer = 10f;
     public float t;
     public float speed = 2f;
     //Health variables
