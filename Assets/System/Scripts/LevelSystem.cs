@@ -18,6 +18,7 @@ public class LevelSystem : MonoBehaviour
     public DamageEvent damageEvent;
     public GameObject stat1, stat2, stat3;
     public GameObject currentStat;
+    TextMeshProUGUI[] textArray;
     float randomChoice;
     float randomRarity;
     //int selected = 1;
@@ -36,7 +37,7 @@ public class LevelSystem : MonoBehaviour
         if (xp >= maxXP)
         {
             xp = xp - maxXP;
-            maxXP *= Mathf.FloorToInt(maxXP*1.5f);
+            maxXP = Mathf.FloorToInt(maxXP*1.5f);
             level += 1;
             levelUp();
         }
@@ -50,6 +51,7 @@ public class LevelSystem : MonoBehaviour
         for (int selected = 1; selected <= 3; selected++)
         {
             randomRarity = Random.Range(0, 100);
+            Debug.Log(randomRarity);
             if (selected == 1)
             {
                 currentStat = stat1;
@@ -62,32 +64,32 @@ public class LevelSystem : MonoBehaviour
             {
                 currentStat = stat3;
             }
-            Text[] textArray = currentStat.GetComponentsInChildren<Text>();
-            if (randomRarity > 90 && randomRarity < 100)
+            textArray = currentStat.GetComponentsInChildren<TextMeshProUGUI>();
+            if (randomRarity > 90 && randomRarity <= 100)
             {
                 currentStat.GetComponentInChildren<Button>().onClick.AddListener(damageUp);
                 textArray[0].text = "Damage Up";
-                textArray[1].text = "Increases your damage by 10%";
+                textArray[1].text = "Increases your damage by 25%";
             }
-            if (randomRarity > 80 && randomRarity < 90)
+            if (randomRarity > 80 && randomRarity <= 90)
             {
                 currentStat.GetComponentInChildren<Button>().onClick.AddListener(fireRateUp);
                 textArray[0].text = "Fire Rate Up";
                 textArray[1].text = "Increases your fire rate by 10%";
             }
-            if (randomRarity > 60 && randomRarity < 80)
+            if (randomRarity > 60 && randomRarity <= 80)
             {
                 currentStat.GetComponentInChildren<Button>().onClick.AddListener(hpUp);
                 textArray[0].text = "HP Up";
                 textArray[1].text = "Increases your HP by 10";
             }
-            if (randomRarity > 40 && randomRarity < 60)
+            if (randomRarity > 40 && randomRarity <= 60)
             {
                 currentStat.GetComponentInChildren<Button>().onClick.AddListener(bulletSpeedUp);
                 textArray[0].text = "Bullet Speed Up";
                 textArray[1].text = "Increases the speed of your bullets by 10%";
             }
-            if (randomRarity > 35 && randomRarity < 40)
+            if (randomRarity > 35 && randomRarity <= 40)
             {
                 if (playerMove.timer > 2)
                 {
@@ -102,7 +104,7 @@ public class LevelSystem : MonoBehaviour
                     textArray[1].text = "Increases your duration of dash by 0.1s, can only go up to 2s";
                 }
             }
-            if (randomRarity > 30 && randomRarity < 35)
+            if (randomRarity > 30 && randomRarity <= 35)
             {
                 if (playerMove.cooldownTimer > 3)
                 {
@@ -117,7 +119,7 @@ public class LevelSystem : MonoBehaviour
                     textArray[1].text = "Heals you for 50 HP";
                 }
             }
-            if (randomRarity < 1)
+            if (randomRarity <= 1)
             {
                 if (!spawner.autoFire)
                 {
@@ -132,7 +134,7 @@ public class LevelSystem : MonoBehaviour
                     textArray[1].text = "Heals you for 50 HP";
                 }
             }
-            if (randomRarity < 30 && randomRarity > 1)
+            if (randomRarity > 1 && randomRarity <= 30)
             {
                 currentStat.GetComponentInChildren<Button>().onClick.AddListener(healing);
                 textArray[0].text = "Healing";
@@ -146,14 +148,14 @@ public class LevelSystem : MonoBehaviour
         stat1.GetComponentInChildren<Button>().onClick.RemoveListener(damageUp);
         stat2.GetComponentInChildren<Button>().onClick.RemoveListener(damageUp);
         stat3.GetComponentInChildren<Button>().onClick.RemoveListener(damageUp);
-        spawner.bulletDamage *= 0.1f;
+        spawner.bulletDamage = Mathf.FloorToInt(spawner.bulletDamage*1.25f);
     }
     public void fireRateUp()
     {
         stat1.GetComponentInChildren<Button>().onClick.RemoveListener(fireRateUp);
         stat2.GetComponentInChildren<Button>().onClick.RemoveListener(fireRateUp);
         stat3.GetComponentInChildren<Button>().onClick.RemoveListener(fireRateUp);
-        spawner.fireRate /= 0.1f;
+        spawner.fireRate /= 1.1f;
     }
 
     public void autoFire()
@@ -168,7 +170,7 @@ public class LevelSystem : MonoBehaviour
         stat1.GetComponentInChildren<Button>().onClick.RemoveListener(bulletSpeedUp);
         stat2.GetComponentInChildren<Button>().onClick.RemoveListener(bulletSpeedUp);
         stat3.GetComponentInChildren<Button>().onClick.RemoveListener(bulletSpeedUp);
-        spawner.bulletSpeed *= 0.1f;
+        spawner.bulletSpeed *= 1.1f;
     }
     public void hpUp()
     {

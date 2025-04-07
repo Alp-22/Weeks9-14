@@ -34,7 +34,7 @@ public class ZombieSpawner : MonoBehaviour
         if (!spawned)
         {
             speed = Mathf.FloorToInt(Random.Range(3, 7));
-            zombieHP = Mathf.FloorToInt(Random.Range(20 * timerBuff, 300 * timerBuff));
+            zombieHP = Mathf.FloorToInt(Random.Range(20 * timerBuff, 100 * timerBuff));
             zombieMaxHP = zombieHP;
             zombieDamage = Mathf.FloorToInt(Random.Range(1 * timerBuff, 10 * timerBuff));
             spawnPosition = new Vector3(Random.Range(-50, 50), Random.Range(-50,50), Random.Range(-50,50));
