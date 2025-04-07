@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,9 @@ public class Bullet : MonoBehaviour
     float damage = 10f;
     public BulletSpawner spawner;
     int counter;
+    float timer = 2f;
+    public float t;
+    bool timerDone = false;
     void Start()
     {
 
@@ -28,14 +32,26 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        StartCoroutine(deleteTimer());
         //Bullet travels right of where the gun is pointing
         Vector2 objectPos = transform.position;
         transform.position += transform.right * speed * Time.deltaTime;
         counter++;
         //If the bullet exists for over 480 frames it gets destroyed
-        if (counter >= 10000/speed)
+        if (timerDone)
         {
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator deleteTimer()
+    {
+        t = 0;
+        while (t < timer)
+        {
+            t += Time.deltaTime;
+            yield return null;
+        }
+        timerDone = true;
     }
 }

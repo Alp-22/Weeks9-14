@@ -5,8 +5,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.Tracing;
 using TMPro;
+using Unity.Burst.CompilerServices;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.U2D;
 
 public class BulletSpawner : MonoBehaviour
 {
@@ -26,16 +29,21 @@ public class BulletSpawner : MonoBehaviour
     int counter;
     //Values to control gun stats
     public bool autoFire = false;
-    public float fireRate = 100f;
+    //public float fireRate = 100f;
     public float bulletSpeed = 50f;
     public float bulletDamage = 10f;
     public List<GameObject> spawnedBullets;
     public CinemachineImpulseSource impulseSource;
     public AudioSource pistolShot;
+    Coroutine fireRateCounter;
+    float fireRate = 0.2f;
+    public float t;
+    bool timerDone = false;
     void Start()
     {
         //Initialize list to track spawned bullets
         spawnedBullets = new List<GameObject>();
+        StartCoroutine(FireRateTimer());
     }
 
     //Changes whether or not the gun is autofire or not with a button
@@ -70,6 +78,7 @@ public class BulletSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         //Set the number values in the ui to the stats of the weapons
         damageT.text = bulletDamage.ToString();
         bulletspeedT.text = bulletSpeed.ToString();
@@ -90,7 +99,7 @@ public class BulletSpawner : MonoBehaviour
         //Prevent the gun from shooting if the cursor is over the UI
         //if (EventSystem.current.IsPointerOverGameObject()) return;
         //If the counter is over the fire rate it lets you shoot
-        if (fire && counter >= fireRate)
+        if (fire && timerDone)
         {
             //Spawns the bullet and muzzle flash
             bulletGO = Instantiate(prefab, transform.position, transform.rotation);
@@ -111,6 +120,18 @@ public class BulletSpawner : MonoBehaviour
             counter = 0;
             impulseSource.GenerateImpulse();
             pistolShot.Play();
+            StartCoroutine(FireRateTimer());
+            timerDone = false;
         }
+    }
+    private IEnumerator FireRateTimer()
+    {
+        t = 0;
+        while (t < fireRate)
+        {
+            t += Time.deltaTime;
+            yield return null;
+        }
+        timerDone = true;
     }
 }
