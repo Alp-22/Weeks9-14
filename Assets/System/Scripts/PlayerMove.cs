@@ -10,9 +10,10 @@ public class PlayerMove : MonoBehaviour
     void Start()
     {
         //DamageEvent = GetComponent<DamageEvent>();
+        //Initializes the trail renderer
         trailrenderer = GetComponent<TrailRenderer>();
     }
-
+    //Initialize variables
     public float timer = 1f, cooldownTimer = 5f;
     public float t, t2;
     bool cooldownUp = true;
@@ -72,11 +73,14 @@ public class PlayerMove : MonoBehaviour
 
         playerPos += transform.right * direction * speed * Time.deltaTime;
         playerPos += transform.up * direction2 * speed * Time.deltaTime;
+        //If you're off cooldown and you press shift you go faster
         if (Input.GetKeyDown(KeyCode.LeftShift) && cooldownUp)
         {
             speed *= 3;
+            //Starts your dash timer
             StartCoroutine(DashTimer());
         }
+        //Prevents you from going out of bounds
         if (transform.position.x > 50)
         {
             playerPos.x = 50;
@@ -99,23 +103,31 @@ public class PlayerMove : MonoBehaviour
     {
         cooldownUp = false;
         t = 0;
+        //Enables trail to indicate you're dashing
         trailrenderer.emitting = true;
+        //Plays dash audio
         dashAudio.Play();
+        //Removes damage listener so you don't take damage while dashing
         damageListener.damageEvent.RemoveListener(damageListener.Hit);
         while (t < timer)
         {
             t += Time.deltaTime;
             yield return null;
         }
+        //Adds listener back after damage is over
         damageListener.damageEvent.AddListener(damageListener.Hit);
+        //Disable Trail
         trailrenderer.emitting = false;
+        //Set speed back to normal
         speed /= 3;
+        //Stop the dash coroutine and start the cooldown coroutine
         StopCoroutine(DashTimer());
         StartCoroutine(DashCooldown());
     }
 
     private IEnumerator DashCooldown()
     {
+        //Starts cooldown timer
         t2 = 0;
         text.gameObject.SetActive(true);
         while (t2 < cooldownTimer)
@@ -125,6 +137,7 @@ public class PlayerMove : MonoBehaviour
             text.text = "Dash Cooldown: " + Mathf.FloorToInt(timerCooldown) + "s";
             yield return null;
         }
+        //When timer is up stop the cooldown coroutine and let the player dash again with a boolean, disable text that shows you're on cooldown
         timerCooldown = 5f;
         text.gameObject.SetActive(false);
         cooldownUp = true;

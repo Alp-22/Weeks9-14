@@ -32,10 +32,13 @@ public class BulletSpawner : MonoBehaviour
     //public float fireRate = 100f;
     public float bulletSpeed = 50f;
     public float bulletDamage = 3f;
+    //Arraylist for the bullets that are spawned
     public List<GameObject> spawnedBullets;
+    //Cinemachine for impulse
     public CinemachineImpulseSource impulseSource;
     public AudioSource pistolShot;
     Coroutine fireRateCounter;
+    //Fire rate and timer values
     public float fireRate = 0.4f;
     public float t;
     bool timerDone = false;
@@ -43,6 +46,7 @@ public class BulletSpawner : MonoBehaviour
     {
         //Initialize list to track spawned bullets
         spawnedBullets = new List<GameObject>();
+        //Initialize fire rate coroutine
         StartCoroutine(FireRateTimer());
     }
 
@@ -116,16 +120,19 @@ public class BulletSpawner : MonoBehaviour
             muzzle = muzzleGO.GetComponent<Muzzle>();
             //Set the muzzle's parent to the muzzle spawner to account for rotation
             muzzleGO.transform.parent = spawner.transform;
-            //Reset counter to 0 to account for firing delay
-            counter = 0;
+            //Generate camera shake when you shoot
             impulseSource.GenerateImpulse();
+            //Play sound when shooting
             pistolShot.Play();
+            //Start couroutine for the timer
             StartCoroutine(FireRateTimer());
+            //Set timer done to false to start the fire rate cooldown
             timerDone = false;
         }
     }
     private IEnumerator FireRateTimer()
     {
+        //Timer to determine how fast the bullet should fire
         t = 0;
         while (t < fireRate)
         {

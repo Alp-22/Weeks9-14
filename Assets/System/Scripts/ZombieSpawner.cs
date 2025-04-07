@@ -7,6 +7,8 @@ using UnityEngine;
 public class ZombieSpawner : MonoBehaviour
 {
     // Start is called before the first frame update
+    //Initialize variables
+    //Arraylist of the spawned zombies
     public List<GameObject> spawnedZombies;
     public GameObject zombieGO;
     public Zombies zombie;
@@ -30,24 +32,29 @@ public class ZombieSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Buff the zombies stats based on how long the player has been playing
         float timerBuff = 1+(timers.time/100);
         if (!spawned)
         {
+            //Randomize player's stats multipled by the timer buff
             speed = Mathf.FloorToInt(Random.Range(3, 7));
             zombieHP = Mathf.FloorToInt(Random.Range(20 * timerBuff, 100 * timerBuff));
             zombieMaxHP = zombieHP;
             zombieDamage = Mathf.FloorToInt(Random.Range(1 * timerBuff, 10 * timerBuff));
+            //Spawn the zombie somewhere random on the map
             spawnPosition = new Vector3(Random.Range(-50, 50), Random.Range(-50,50), Random.Range(-50,50));
             zombieGO = Instantiate(prefab, spawnPosition, transform.rotation);
             zombie = zombieGO.GetComponent<Zombies>();
             zombie.zombieSpawner = this;
             spawnedZombies.Add(zombieGO);
             spawned = true;
+            //Start coroutine to determine when another zombie should spawn
             spawnTimer = StartCoroutine(SpawnTimer());
         }
     }
     private IEnumerator SpawnTimer()
     {
+        //When timer is up spawn another zombie
         t = 0;
         while (t < timer)
         {

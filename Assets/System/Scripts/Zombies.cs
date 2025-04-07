@@ -44,6 +44,7 @@ public class Zombies : MonoBehaviour
     //int respawnCounter = 0;
     void Start()
     {
+        //Initialize zombies stats off of zombie spawner
         bulletSpawner = GameObject.Find("BulletSpawner");
         player = GameObject.Find("Player");
         levelSystem = GameObject.Find("Level").GetComponent<LevelSystem>();
@@ -51,12 +52,14 @@ public class Zombies : MonoBehaviour
         zombieMaxHP = zombieSpawner.zombieMaxHP;
         zombieDamage = zombieSpawner.zombieDamage;
         speed = zombieSpawner.speed;
+        //Play the zombie sound whenever a zombie spawns
         StartCoroutine(SoundTimer());
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Make the zombie move
         zombieMovement();
         if (timerUp)
         {
@@ -140,12 +143,14 @@ public class Zombies : MonoBehaviour
     }
     public void zombieMovement()
     {
+        //Constantly move the zombie towards the player's position based on their speed and time
         playerPos = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
         transform.position = Vector3.MoveTowards(transform.position, playerPos, speed * Time.deltaTime);
     }
 
     public void playSound()
     {
+        //Choose between 1 of 3 zombie sounds to play randomly
         sound = Random.Range(1, 4);
         Debug.Log(sound);
         if (sound == 1)
@@ -165,6 +170,7 @@ public class Zombies : MonoBehaviour
 
     private IEnumerator SoundTimer()
     {
+        //Cooldown for sound
         t = 0;
         while (t < timer)
         {

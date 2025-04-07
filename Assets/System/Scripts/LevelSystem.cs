@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class LevelSystem : MonoBehaviour
 {
     // Start is called before the first frame update
+    //Initialize variables
     public int xp = 0;
     public int maxXP = 100;
     public int level = 1;
@@ -24,6 +25,7 @@ public class LevelSystem : MonoBehaviour
     //int selected = 1;
     void Start()
     {
+        //Initializes the default method on each ui to close after the button has been clicked and restore time scale
         stat1.GetComponentInChildren<Button>().onClick.AddListener(restore);
         stat2.GetComponentInChildren<Button>().onClick.AddListener(restore);
         stat3.GetComponentInChildren<Button>().onClick.AddListener(restore);
@@ -32,10 +34,12 @@ public class LevelSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Set text in the UI to account for your xp amount
         xpText.text = "XP: " + xp + "/" + maxXP;
         levelText.text = "Level: " + level;
         if (xp >= maxXP)
         {
+            //if your xp amount is higher then your max xp then you level up
             xp = xp - maxXP;
             maxXP = Mathf.FloorToInt(maxXP*1.5f);
             level += 1;
@@ -44,14 +48,17 @@ public class LevelSystem : MonoBehaviour
     }
     public void levelUp()
     {
+        //Set the upgrade screens active and freeze the game
         stat1.SetActive(true);
         stat2.SetActive(true);
         stat3.SetActive(true);
         Time.timeScale = 0;
         for (int selected = 1; selected <= 3; selected++)
         {
+            //Randomly generate 3 values to determine what upgrade you get
             randomRarity = Random.Range(0, 100);
             Debug.Log(randomRarity);
+            //Cycle between each UI using a for loop
             if (selected == 1)
             {
                 currentStat = stat1;
@@ -64,6 +71,7 @@ public class LevelSystem : MonoBehaviour
             {
                 currentStat = stat3;
             }
+            //Depending on what number you get, you get a different upgrade which changes the text on the UI and adds a unique listener
             textArray = currentStat.GetComponentsInChildren<TextMeshProUGUI>();
             if (randomRarity > 90 && randomRarity <= 100)
             {
@@ -145,6 +153,7 @@ public class LevelSystem : MonoBehaviour
     
     public void damageUp()
     {
+        //Increases damage by 25% and removes listeners after the button has been clicked
         stat1.GetComponentInChildren<Button>().onClick.RemoveListener(damageUp);
         stat2.GetComponentInChildren<Button>().onClick.RemoveListener(damageUp);
         stat3.GetComponentInChildren<Button>().onClick.RemoveListener(damageUp);
@@ -152,6 +161,7 @@ public class LevelSystem : MonoBehaviour
     }
     public void fireRateUp()
     {
+        //Increases fire rate by 10% and  removes listeners after the button has been clicked
         stat1.GetComponentInChildren<Button>().onClick.RemoveListener(fireRateUp);
         stat2.GetComponentInChildren<Button>().onClick.RemoveListener(fireRateUp);
         stat3.GetComponentInChildren<Button>().onClick.RemoveListener(fireRateUp);
@@ -160,6 +170,7 @@ public class LevelSystem : MonoBehaviour
 
     public void autoFire()
     {
+        //Enables autofire and removes listeners after the button has been clicked
         stat1.GetComponentInChildren<Button>().onClick.RemoveListener(autoFire);
         stat2.GetComponentInChildren<Button>().onClick.RemoveListener(autoFire);
         stat3.GetComponentInChildren<Button>().onClick.RemoveListener(autoFire);
@@ -167,6 +178,7 @@ public class LevelSystem : MonoBehaviour
     }
     public void bulletSpeedUp()
     {
+        //Increases how fast your bullets travel by 10% and removes listeners after button has been clicked
         stat1.GetComponentInChildren<Button>().onClick.RemoveListener(bulletSpeedUp);
         stat2.GetComponentInChildren<Button>().onClick.RemoveListener(bulletSpeedUp);
         stat3.GetComponentInChildren<Button>().onClick.RemoveListener(bulletSpeedUp);
@@ -174,6 +186,7 @@ public class LevelSystem : MonoBehaviour
     }
     public void hpUp()
     {
+        //Increases your max hp by 10 and removes listeners after button has been clicked
         stat1.GetComponentInChildren<Button>().onClick.RemoveListener(hpUp);
         stat2.GetComponentInChildren<Button>().onClick.RemoveListener(hpUp);
         stat3.GetComponentInChildren<Button>().onClick.RemoveListener(hpUp);
@@ -182,6 +195,7 @@ public class LevelSystem : MonoBehaviour
     }
     public void dashTimerUp()
     {
+        //Increases your dash time by 0.1s and removes listeners after button has been clicked
         stat1.GetComponentInChildren<Button>().onClick.RemoveListener(dashTimerUp);
         stat2.GetComponentInChildren<Button>().onClick.RemoveListener(dashTimerUp);
         stat3.GetComponentInChildren<Button>().onClick.RemoveListener(dashTimerUp);
@@ -189,13 +203,15 @@ public class LevelSystem : MonoBehaviour
     }
     public void dashCooldownDown()
     {
+        //Decreases your dash cooldown by 0.5s and removes listeners after button has been clicked
         stat1.GetComponentInChildren<Button>().onClick.RemoveListener(dashCooldownDown);
         stat2.GetComponentInChildren<Button>().onClick.RemoveListener(dashCooldownDown);
         stat3.GetComponentInChildren<Button>().onClick.RemoveListener(dashCooldownDown);
-        playerMove.timer -= 0.5f;
+        playerMove.cooldownTimer -= 0.5f;
     }
     public void healing()
     {
+        //Heals you by 50 hp and sets your hp to max if it goes over and removes listeners after button has been clicked
         currentStat.GetComponentInChildren<Button>().onClick.AddListener(healing);
         damageEvent.playerHP += 50f;
         if (damageEvent.playerHP > damageEvent.playerMaxHP)
@@ -205,6 +221,7 @@ public class LevelSystem : MonoBehaviour
     }
     public void restore()
     {
+        //Restores time and sets UI inactive after a button is clicked
         Time.timeScale = 1;
         stat1.SetActive(false);
         stat2.SetActive(false);

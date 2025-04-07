@@ -64,6 +64,7 @@ public class DamageEvent : MonoBehaviour
                 {
                     if (!hit)
                     {
+                        //Invoke the damage event when player gets hit
                         damageEvent.Invoke();
                         colorCurve = 0f;
                         changeColor = Color.red;
@@ -97,7 +98,7 @@ public class DamageEvent : MonoBehaviour
             sprite.color = new Color(1, 1, 1);
         }*/
     }
-
+    //Function which determines if the player gets hit, gets unsubscribed to when dashing
     public void Hit()
     {
         Debug.Log("Hit");
@@ -110,6 +111,7 @@ public class DamageEvent : MonoBehaviour
         playerHP -= spawner.zombieDamage;
         if (playerHP <= 0)
         {
+            //If the player's hp reaches 0 show the game over screen
             playerHP = 0;
             //Add game over screen
             //gameObject.SetActive(false);
@@ -118,16 +120,17 @@ public class DamageEvent : MonoBehaviour
             GAMEOVER.SetActive(true);
             
         }
-
+        //Start the immunity frame coroutine
         damaged = StartCoroutine(ImmunityFrames());
     }
-
+    //Enumerator to calculate how long you should be immune to damage for
     private IEnumerator ImmunityFrames()
     {
         t = 0;
         Color color = new Color(0, 0, 0, 255);
         while (t < timer)
         {
+            //Make the player flash red
             colorCurve = color.r + Time.deltaTime;
             changeColor.b += hitReg.Evaluate(colorCurve);
             changeColor.g += hitReg.Evaluate(colorCurve);
@@ -136,6 +139,7 @@ public class DamageEvent : MonoBehaviour
             yield return null;
         }
         Debug.Log("Completed IFrames");
+        //Set color to default
         colorCurve = 0f;
         changeColor = Color.red;
         //counter = 0;
@@ -145,6 +149,7 @@ public class DamageEvent : MonoBehaviour
     }
     public void restart()
     {
+        //Sorry if this isn't allowed im not sure if it is or not but allows you to restart by pressing the retry button by loading the scene again
         Time.timeScale = 1;
         SceneManager.LoadScene("System");
     }

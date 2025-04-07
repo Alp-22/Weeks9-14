@@ -32,18 +32,19 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Starts coroutine for destroying the bullet
         StartCoroutine(deleteTimer());
         //Bullet travels right of where the gun is pointing
         Vector2 objectPos = transform.position;
         transform.position += transform.right * speed * Time.deltaTime;
         counter++;
-        //If the bullet exists for over 480 frames it gets destroyed
+        //If the timer is finished the bullet gets destroyed
         if (timerDone)
         {
             Destroy(gameObject);
         }
     }
-
+    //Timer to determine when the bullet should be deleted
     private IEnumerator deleteTimer()
     {
         t = 0;
@@ -52,6 +53,7 @@ public class Bullet : MonoBehaviour
             t += Time.deltaTime;
             yield return null;
         }
+        //enables boolean when timer is done
         timerDone = true;
     }
 }
