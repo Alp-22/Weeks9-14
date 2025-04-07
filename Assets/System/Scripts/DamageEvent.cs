@@ -7,6 +7,8 @@ using UnityEngine.Events;
 using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 using UnityEngine.U2D;
 using TMPro;
+using UnityEngine.SceneManagement;
+using System.Data;
 
 public class DamageEvent : MonoBehaviour
 {
@@ -19,6 +21,7 @@ public class DamageEvent : MonoBehaviour
     public AnimationCurve hitReg;
     public ZombieSpawner spawner;
     public GameObject zombieSpawner;
+    public GameObject GAMEOVER;
     //Variable for the health bar text
     public TextMeshProUGUI text;
     Color changeColor = new Color(0, 0, 0, 255);
@@ -33,7 +36,7 @@ public class DamageEvent : MonoBehaviour
     //int respawnCounter = 0;
     void Start()
     {
-
+        damageEvent.AddListener(Hit);
     }
 
     // Update is called once per frame
@@ -109,6 +112,11 @@ public class DamageEvent : MonoBehaviour
         {
             playerHP = 0;
             //Add game over screen
+            //gameObject.SetActive(false);
+            //SpriteRenderer newSprite = gameObject.GetComponent<SpriteRenderer>()
+            Time.timeScale = 0;
+            GAMEOVER.SetActive(true);
+            
         }
 
         damaged = StartCoroutine(ImmunityFrames());
@@ -134,5 +142,10 @@ public class DamageEvent : MonoBehaviour
         //hit = false;
         sprite.color = new Color(1, 1, 1);
         hit = false;
+    }
+    public void restart()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("System");
     }
 }

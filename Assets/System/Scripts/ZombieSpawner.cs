@@ -12,7 +12,8 @@ public class ZombieSpawner : MonoBehaviour
     public Zombies zombie;
     public GameObject prefab;
     public GameObject spawner;
-    public int zombieDamage = 1;
+    public Timer timers;
+    public float zombieDamage = 1;
     bool spawned = false;
     Coroutine spawnTimer;
     float timer = 10f;
@@ -29,12 +30,13 @@ public class ZombieSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float timerBuff = timers.time/30;
         if (!spawned)
         {
-            speed = Random.Range(3, 7);
-            zombieHP = Random.Range(20, 300);
+            speed = Mathf.FloorToInt(Random.Range(3, 7));
+            zombieHP = Mathf.FloorToInt(Random.Range(20 * timerBuff, 300 * timerBuff));
             zombieMaxHP = zombieHP;
-            zombieDamage = Random.Range(1, 10);
+            zombieDamage = Mathf.FloorToInt(Random.Range(1 * timerBuff, 10 * timerBuff));
             spawnPosition = new Vector3(Random.Range(-100, 100), Random.Range(-100,100), Random.Range(-100,100));
             zombieGO = Instantiate(prefab, spawnPosition, transform.rotation);
             zombie = zombieGO.GetComponent<Zombies>();
