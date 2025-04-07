@@ -103,6 +103,7 @@ public class DamageEvent : MonoBehaviour
     public void Hit()
     {
         Debug.Log("Hit");
+        //Plays sound when you get hit
         hitSound.Play();
         //Enable hit boolean
         //Sets the colors to default
