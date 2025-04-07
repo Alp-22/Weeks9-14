@@ -33,6 +33,7 @@ public class DamageEvent : MonoBehaviour
     Coroutine damaged;
     //Health variables
     public float playerHP = 100f, playerMaxHP = 100f;
+    public AudioSource hitSound;
     //int respawnCounter = 0;
     void Start()
     {
@@ -102,6 +103,7 @@ public class DamageEvent : MonoBehaviour
     public void Hit()
     {
         Debug.Log("Hit");
+        hitSound.Play();
         //Enable hit boolean
         //Sets the colors to default
         colorCurve = 0f;
