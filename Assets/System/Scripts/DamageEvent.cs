@@ -32,7 +32,7 @@ public class DamageEvent : MonoBehaviour
     public float t;
     Coroutine damaged;
     //Health variables
-    float playerHP = 100f, playerMaxHP = 100f;
+    public float playerHP = 100f, playerMaxHP = 100f;
     //int respawnCounter = 0;
     void Start()
     {

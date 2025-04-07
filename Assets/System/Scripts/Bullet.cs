@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour
     //Set the travel speed of the bullet
     float speed = 50f;
     //Set the damage of the bullet
-    float damage = 10f;
+    //float damage = 10f;
     public BulletSpawner spawner;
     int counter;
     float timer = 2f;
@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour
 
     }
     //Adjust bullet damage based on a slider, value initalized on the bullet spawner script
-    public void bulletDamage(float dm)
+    /*public void bulletDamage(float dm)
     {
         damage = dm;
     }
@@ -28,7 +28,7 @@ public class Bullet : MonoBehaviour
     public void bulletSpeed(float sp)
     {
         speed = sp;
-    }
+    }*/
     // Update is called once per frame
     void Update()
     {

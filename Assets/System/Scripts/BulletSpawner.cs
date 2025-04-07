@@ -31,12 +31,12 @@ public class BulletSpawner : MonoBehaviour
     public bool autoFire = false;
     //public float fireRate = 100f;
     public float bulletSpeed = 50f;
-    public float bulletDamage = 10f;
+    public float bulletDamage = 3f;
     public List<GameObject> spawnedBullets;
     public CinemachineImpulseSource impulseSource;
     public AudioSource pistolShot;
     Coroutine fireRateCounter;
-    float fireRate = 0.2f;
+    public float fireRate = 0.4f;
     public float t;
     bool timerDone = false;
     void Start()
@@ -62,7 +62,7 @@ public class BulletSpawner : MonoBehaviour
         //autoFire = f;
     }
     //Changes the fire rate with a slider
-    public void changeFireRate(float fr)
+    /*public void changeFireRate(float fr)
     {
         fireRate = fr;
     }
@@ -73,16 +73,16 @@ public class BulletSpawner : MonoBehaviour
     public void changeBulletDamage(float bd)
     {
         bulletDamage = bd;
-    }
+    }*/
 
     // Update is called once per frame
     void Update()
     {
 
         //Set the number values in the ui to the stats of the weapons
-        damageT.text = bulletDamage.ToString();
+        /*damageT.text = bulletDamage.ToString();
         bulletspeedT.text = bulletSpeed.ToString();
-        firerateT.text = fireRate.ToString();
+        firerateT.text = fireRate.ToString();*/
         //Constantly increase the counter to account for firing rate
         counter++;
         bool fire = Input.GetMouseButtonDown(0);
@@ -109,8 +109,8 @@ public class BulletSpawner : MonoBehaviour
             //Add the spawned bullets to a list
             spawnedBullets.Add(bulletGO);
             //Set the bullet speed and damage on the bullet spawner script as I couldn't figure out a way to edit the prefab directly
-            bullet.bulletSpeed(bulletSpeed);
-            bullet.bulletDamage(bulletDamage);
+            //bullet.bulletSpeed(bulletSpeed);
+            //bullet.bulletDamage(bulletDamage);
             //Sets the position of the muzzle where the spawner is
             GameObject muzzleGO = Instantiate(prefab2, spawner.transform.position, transform.rotation);
             muzzle = muzzleGO.GetComponent<Muzzle>();

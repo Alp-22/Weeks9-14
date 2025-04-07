@@ -13,9 +13,8 @@ public class PlayerMove : MonoBehaviour
         trailrenderer = GetComponent<TrailRenderer>();
     }
 
-    float timer = 1f, cooldownTimer = 5f;
+    public float timer = 1f, cooldownTimer = 5f;
     public float t, t2;
-    bool timerUp = false;
     bool cooldownUp = true;
     float speed = 5f;
     float timerCooldown = 5f;
@@ -67,24 +66,40 @@ public class PlayerMove : MonoBehaviour
         }
         transform.position = playerPos;*/
 
-
+        Vector3 playerPos = transform.position;
         float direction = Input.GetAxis("Horizontal");
         float direction2 = Input.GetAxis("Vertical");
 
-
-        transform.position += transform.right * direction * speed * Time.deltaTime;
-        transform.position += transform.up * direction2 * speed * Time.deltaTime;
+        playerPos += transform.right * direction * speed * Time.deltaTime;
+        playerPos += transform.up * direction2 * speed * Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.LeftShift) && cooldownUp)
         {
             speed *= 3;
             StartCoroutine(DashTimer());
         }
+        if (transform.position.x > 50)
+        {
+            playerPos.x = 50;
+        }
+        if (transform.position.x < -50)
+        {
+            playerPos.x = -50;
+        }
+        if (transform.position.y > 50)
+        {
+            playerPos.y = 50;
+        }
+        if (transform.position.y < -50)
+        {
+            playerPos.y = -50;
+        }
+        transform.position = playerPos;
     }
     private IEnumerator DashTimer()
     {
         cooldownUp = false;
         t = 0;
-        trailrenderer.enabled = true;
+        trailrenderer.emitting = true;
         dashAudio.Play();
         damageListener.damageEvent.RemoveListener(damageListener.Hit);
         while (t < timer)
@@ -93,7 +108,7 @@ public class PlayerMove : MonoBehaviour
             yield return null;
         }
         damageListener.damageEvent.AddListener(damageListener.Hit);
-        trailrenderer.enabled = false;
+        trailrenderer.emitting = false;
         speed /= 3;
         StopCoroutine(DashTimer());
         StartCoroutine(DashCooldown());

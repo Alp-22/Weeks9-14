@@ -31,6 +31,8 @@ public class Zombies : MonoBehaviour
     public AudioSource sound2;
     public AudioSource sound3;
 
+    public LevelSystem levelSystem;
+
     float timer = 1f;
     public float t;
     bool timerUp = false;
@@ -44,6 +46,7 @@ public class Zombies : MonoBehaviour
     {
         bulletSpawner = GameObject.Find("BulletSpawner");
         player = GameObject.Find("Player");
+        levelSystem = GameObject.Find("Level").GetComponent<LevelSystem>();
         zombieHP = zombieSpawner.zombieHP;
         zombieMaxHP = zombieSpawner.zombieMaxHP;
         zombieDamage = zombieSpawner.zombieDamage;
@@ -100,6 +103,7 @@ public class Zombies : MonoBehaviour
         {
             //gameObject.SetActive(false);
             Destroy(gameObject);
+            levelSystem.xp += Mathf.FloorToInt((zombieMaxHP * zombieDamage * speed) / 30);
         }
         /*if (gameObject.activeSelf == false)
         {
